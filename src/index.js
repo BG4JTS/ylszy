@@ -1,7 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { execSync } = require('child_process');
-const fs = require('fs');
 const path = require('path');
 
 const app = express();
@@ -13,24 +11,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // 静态文件服务
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 存储音频节目数据的文件
-const DATA_FILE = path.join(__dirname, 'programs.json');
-
-// 确保数据文件存在
-if (!fs.existsSync(DATA_FILE)) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2));
-}
-
-// 读取现有数据
-function readData() {
-  const data = fs.readFileSync(DATA_FILE, 'utf8');
-  return JSON.parse(data);
-}
-
-// 保存数据
-function saveData(data) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
-}
+// 存储音频节目数据的内存存储（Vercel 上文件系统只读）
+let programs = [];
 
 // 提交 PR 的函数
 function submitPR(program) {
@@ -58,14 +40,8 @@ app.post('/submit', (req, res) => {
     return res.status(400).json({ error: '缺少必要字段' });
   }
   
-  // 读取现有数据
-  const programs = readData();
-  
-  // 添加新节目
+  // 添加新节目到内存存储
   programs.push(program);
-  
-  // 保存数据
-  saveData(programs);
   
   // 提交 PR
   const prResult = submitPR(program);
@@ -79,7 +55,6 @@ app.post('/submit', (req, res) => {
 
 // 获取所有节目
 app.get('/programs', (req, res) => {
-  const programs = readData();
   res.json(programs);
 });
 
