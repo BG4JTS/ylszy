@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "build": "echo Building website...",
-    "start": "echo Starting development server..."
+    "start": "node src/index.js"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
