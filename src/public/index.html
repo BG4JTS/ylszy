@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>音频节目数据库</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    .form-container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #555;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    textarea {
+      height: 150px;
+      resize: vertical;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .result {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #e8f5e8;
+      border-radius: 4px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>音频节目数据库</h1>
+  
+  <div class="form-container">
+    <form id="programForm">
+      <div class="form-group">
+        <label for="title">节目标题</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="description">节目简介</label>
+        <textarea id="description" name="description" required></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="author">作者/主播</label>
+        <input type="text" id="author" name="author">
+      </div>
+      
+      <div class="form-group">
+        <label for="category">分类</label>
+        <input type="text" id="category" name="category">
+      </div>
+      
+      <button type="submit">提交节目</button>
+    </form>
+  </div>
+  
+  <div class="result" id="result">
+    <h2>提交结果</h2>
+    <div id="resultContent"></div>
+  </div>
+
+  <script>
+    document.getElementById('programForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const program = {
+        title: formData.get('title'),
+        description: formData.get('description'),
+        author: formData.get('author'),
+        category: formData.get('category')
+      };
+      
+      try {
+        const response = await fetch('/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(program)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          const resultContent = document.getElementById('resultContent');
+          resultContent.innerHTML = `
+            <p><strong>节目标题:</strong> ${result.program.title}</p>
+            <p><strong>节目简介:</strong> ${result.program.description}</p>
+            <p><strong>作者/主播:</strong> ${result.program.author || '未提供'}</p>
+            <p><strong>分类:</strong> ${result.program.category || '未提供'}</p>
+            <p><strong>PR 提交状态:</strong> ${result.prSubmitted ? '成功' : '失败'}</p>
+          `;
+          document.getElementById('result').style.display = 'block';
+          e.target.reset();
+        } else {
+          alert('提交失败: ' + result.error);
+        }
+      } catch (error) {
+        console.error('提交失败:', error);
+        alert('提交失败，请稍后重试');
+      }
+    });
+  </script>
+</body>
+</html>

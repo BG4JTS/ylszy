@@ -1,0 +1,28 @@
+{
+  "name": "audio-program-database",
+  "version": "1.0.0",
+  "description": "基于 GitHub 的音频节目数据库项目",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "echo Building website...",
+    "start": "echo Starting development server..."
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.2.2"
+  },
+  "keywords": [
+    "audio",
+    "database",
+    "github",
+    "pr",
+    "automation"
+  ],
+  "author": "",
+  "license": "MIT"
+}
