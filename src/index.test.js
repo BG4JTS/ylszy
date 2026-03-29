@@ -1,13 +1,9 @@
 const request = require('supertest');
 const app = require('./index');
-const fs = require('fs');
-const path = require('path');
 
-const DATA_FILE = path.join(__dirname, 'programs.json');
-
-// 测试前清空数据文件
-beforeEach(() => {
-  fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2));
+// 测试前重置数据
+beforeEach(async () => {
+  await request(app).post('/reset');
 });
 
 // 测试根路由
