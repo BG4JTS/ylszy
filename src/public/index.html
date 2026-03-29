@@ -5,139 +5,118 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>原来是这样？！音频节目数据库</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       font-family: Arial, sans-serif;
       max-width: 800px;
       margin: 0 auto;
       padding: 20px;
-      background-color: #f5f5f5;
+      background-color: #fff;
+      color: #000;
     }
-    h1 {
-      color: #333;
-      text-align: center;
+    h1, h2 {
+      margin-bottom: 20px;
+      font-weight: normal;
     }
-    .form-container {
-      background-color: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    form {
+      margin-bottom: 30px;
     }
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
     label {
       display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-      color: #555;
+      margin-bottom: 5px;
     }
     input, textarea {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+      padding: 8px;
+      border: 1px solid #000;
       font-size: 16px;
     }
     textarea {
-      height: 150px;
+      height: 100px;
       resize: vertical;
     }
     button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 12px 20px;
+      background-color: #000;
+      color: #fff;
+      padding: 10px 20px;
       border: none;
-      border-radius: 4px;
       cursor: pointer;
       font-size: 16px;
     }
-    button:hover {
-      background-color: #45a049;
-    }
     .result {
-      margin-top: 30px;
-      padding: 20px;
-      background-color: #e8f5e8;
-      border-radius: 4px;
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #000;
       display: none;
     }
     .programs-list {
       margin-top: 30px;
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .program-item {
-      border-bottom: 1px solid #eee;
-      padding: 15px 0;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #000;
     }
     .program-item:last-child {
       border-bottom: none;
     }
     .program-title {
       font-weight: bold;
-      font-size: 18px;
-      color: #333;
+      margin-bottom: 5px;
     }
     .program-info {
-      color: #666;
-      margin-top: 5px;
-    }
-    .program-tag {
-      display: inline-block;
-      background-color: #e3f2fd;
-      color: #1976d2;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      margin-right: 5px;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
   <h1>原来是这样？！音频节目数据库</h1>
   
-  <div class="form-container">
-    <form id="programForm">
-      <div class="form-group">
-        <label for="title">节目标题</label>
-        <input type="text" id="title" name="title" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="time">时间</label>
-        <input type="text" id="time" name="time" placeholder="例如：2014-03-08">
-      </div>
-      
-      <div class="form-group">
-        <label for="link">链接</label>
-        <input type="text" id="link" name="link" placeholder="喜马拉雅链接">
-      </div>
-      
-      <div class="form-group">
-        <label for="tag">标签</label>
-        <input type="text" id="tag" name="tag" placeholder="例如：化学、天文">
-      </div>
-      
-      <div class="form-group">
-        <label for="host">主播</label>
-        <input type="text" id="host" name="host" placeholder="例如：旭东, 洁雨">
-      </div>
-      
-      <div class="form-group">
-        <label for="note">备注</label>
-        <textarea id="note" name="note" placeholder="备注信息"></textarea>
-      </div>
-      
-      <div class="form-group">
-        <label for="related">关联节目</label>
-        <input type="text" id="related" name="related" placeholder="关联的节目标题">
-      </div>
-      
-      <button type="submit">提交节目</button>
-    </form>
-  </div>
+  <form id="programForm">
+    <div class="form-group">
+      <label for="title">节目标题</label>
+      <input type="text" id="title" name="title" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="time">时间</label>
+      <input type="text" id="time" name="time" placeholder="例如：2014-03-08">
+    </div>
+    
+    <div class="form-group">
+      <label for="link">链接</label>
+      <input type="text" id="link" name="link" placeholder="喜马拉雅链接">
+    </div>
+    
+    <div class="form-group">
+      <label for="tag">标签</label>
+      <input type="text" id="tag" name="tag" placeholder="例如：化学、天文">
+    </div>
+    
+    <div class="form-group">
+      <label for="host">主播</label>
+      <input type="text" id="host" name="host" placeholder="例如：旭东, 洁雨">
+    </div>
+    
+    <div class="form-group">
+      <label for="note">备注</label>
+      <textarea id="note" name="note" placeholder="备注信息"></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label for="related">关联节目</label>
+      <input type="text" id="related" name="related" placeholder="关联的节目标题">
+    </div>
+    
+    <button type="submit">提交节目</button>
+  </form>
   
   <div class="result" id="result">
     <h2>提交结果</h2>
@@ -179,14 +158,14 @@
         if (result.success) {
           const resultContent = document.getElementById('resultContent');
           resultContent.innerHTML = `
-            <p><strong>节目标题:</strong> ${result.program.title}</p>
-            <p><strong>时间:</strong> ${result.program.time || '未提供'}</p>
-            <p><strong>链接:</strong> ${result.program.link || '未提供'}</p>
-            <p><strong>标签:</strong> ${result.program.tag || '未提供'}</p>
-            <p><strong>主播:</strong> ${result.program.host || '未提供'}</p>
-            <p><strong>备注:</strong> ${result.program.note || '未提供'}</p>
-            <p><strong>关联节目:</strong> ${result.program.related || '未提供'}</p>
-            <p><strong>PR 提交状态:</strong> ${result.prSubmitted ? '成功' : '失败'}</p>
+            <p>节目标题: ${result.program.title}</p>
+            <p>时间: ${result.program.time || '未提供'}</p>
+            <p>链接: ${result.program.link || '未提供'}</p>
+            <p>标签: ${result.program.tag || '未提供'}</p>
+            <p>主播: ${result.program.host || '未提供'}</p>
+            <p>备注: ${result.program.note || '未提供'}</p>
+            <p>关联节目: ${result.program.related || '未提供'}</p>
+            <p>PR 提交状态: ${result.prSubmitted ? '成功' : '失败'}</p>
           `;
           document.getElementById('result').style.display = 'block';
           e.target.reset();
@@ -216,12 +195,12 @@
             <div class="program-item">
               <div class="program-title">${index + 1}. ${program.title}</div>
               <div class="program-info">
-                ${program.time ? `<span>时间: ${program.time}</span><br>` : ''}
-                ${program.tag ? `<span class="program-tag">${program.tag}</span>` : ''}
-                ${program.host ? `<span>主播: ${program.host}</span><br>` : ''}
-                ${program.note ? `<span>备注: ${program.note}</span><br>` : ''}
+                ${program.time ? `时间: ${program.time}<br>` : ''}
+                ${program.tag ? `标签: ${program.tag}<br>` : ''}
+                ${program.host ? `主播: ${program.host}<br>` : ''}
+                ${program.note ? `备注: ${program.note}<br>` : ''}
                 ${program.link ? `<a href="${program.link}" target="_blank">收听链接</a><br>` : ''}
-                ${program.related ? `<span>关联节目: ${program.related}</span>` : ''}
+                ${program.related ? `关联节目: ${program.related}` : ''}
               </div>
             </div>
           `).join('');
