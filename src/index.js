@@ -14,12 +14,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 存储音频节目数据的内存存储（Vercel 上文件系统只读）
 let programs = [];
 
-// 重置数据（用于测试）
-app.post('/reset', (req, res) => {
-  programs = [];
-  res.json({ success: true, message: '数据已重置' });
-});
-
 // 提交 PR 的函数
 function submitPR(program) {
   try {
