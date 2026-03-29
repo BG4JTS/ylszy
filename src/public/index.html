@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>音频节目数据库</title>
+  <title>原来是这样？！音频节目数据库</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -61,10 +61,42 @@
       border-radius: 4px;
       display: none;
     }
+    .programs-list {
+      margin-top: 30px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .program-item {
+      border-bottom: 1px solid #eee;
+      padding: 15px 0;
+    }
+    .program-item:last-child {
+      border-bottom: none;
+    }
+    .program-title {
+      font-weight: bold;
+      font-size: 18px;
+      color: #333;
+    }
+    .program-info {
+      color: #666;
+      margin-top: 5px;
+    }
+    .program-tag {
+      display: inline-block;
+      background-color: #e3f2fd;
+      color: #1976d2;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-right: 5px;
+    }
   </style>
 </head>
 <body>
-  <h1>音频节目数据库</h1>
+  <h1>原来是这样？！音频节目数据库</h1>
   
   <div class="form-container">
     <form id="programForm">
@@ -74,18 +106,33 @@
       </div>
       
       <div class="form-group">
-        <label for="description">节目简介</label>
-        <textarea id="description" name="description" required></textarea>
+        <label for="time">时间</label>
+        <input type="text" id="time" name="time" placeholder="例如：2014-03-08">
       </div>
       
       <div class="form-group">
-        <label for="author">作者/主播</label>
-        <input type="text" id="author" name="author">
+        <label for="link">链接</label>
+        <input type="text" id="link" name="link" placeholder="喜马拉雅链接">
       </div>
       
       <div class="form-group">
-        <label for="category">分类</label>
-        <input type="text" id="category" name="category">
+        <label for="tag">标签</label>
+        <input type="text" id="tag" name="tag" placeholder="例如：化学、天文">
+      </div>
+      
+      <div class="form-group">
+        <label for="host">主播</label>
+        <input type="text" id="host" name="host" placeholder="例如：旭东, 洁雨">
+      </div>
+      
+      <div class="form-group">
+        <label for="note">备注</label>
+        <textarea id="note" name="note" placeholder="备注信息"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="related">关联节目</label>
+        <input type="text" id="related" name="related" placeholder="关联的节目标题">
       </div>
       
       <button type="submit">提交节目</button>
@@ -97,16 +144,25 @@
     <div id="resultContent"></div>
   </div>
 
+  <div class="programs-list" id="programsList">
+    <h2>节目列表</h2>
+    <div id="programsContent"></div>
+  </div>
+
   <script>
+    // 提交表单
     document.getElementById('programForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const formData = new FormData(e.target);
       const program = {
         title: formData.get('title'),
-        description: formData.get('description'),
-        author: formData.get('author'),
-        category: formData.get('category')
+        time: formData.get('time'),
+        link: formData.get('link'),
+        tag: formData.get('tag'),
+        host: formData.get('host'),
+        note: formData.get('note'),
+        related: formData.get('related')
       };
       
       try {
@@ -124,13 +180,19 @@
           const resultContent = document.getElementById('resultContent');
           resultContent.innerHTML = `
             <p><strong>节目标题:</strong> ${result.program.title}</p>
-            <p><strong>节目简介:</strong> ${result.program.description}</p>
-            <p><strong>作者/主播:</strong> ${result.program.author || '未提供'}</p>
-            <p><strong>分类:</strong> ${result.program.category || '未提供'}</p>
+            <p><strong>时间:</strong> ${result.program.time || '未提供'}</p>
+            <p><strong>链接:</strong> ${result.program.link || '未提供'}</p>
+            <p><strong>标签:</strong> ${result.program.tag || '未提供'}</p>
+            <p><strong>主播:</strong> ${result.program.host || '未提供'}</p>
+            <p><strong>备注:</strong> ${result.program.note || '未提供'}</p>
+            <p><strong>关联节目:</strong> ${result.program.related || '未提供'}</p>
             <p><strong>PR 提交状态:</strong> ${result.prSubmitted ? '成功' : '失败'}</p>
           `;
           document.getElementById('result').style.display = 'block';
           e.target.reset();
+          
+          // 刷新节目列表
+          loadPrograms();
         } else {
           alert('提交失败: ' + result.error);
         }
@@ -139,6 +201,38 @@
         alert('提交失败，请稍后重试');
       }
     });
+
+    // 加载节目列表
+    async function loadPrograms() {
+      try {
+        const response = await fetch('/programs');
+        const programs = await response.json();
+        
+        const programsContent = document.getElementById('programsContent');
+        if (programs.length === 0) {
+          programsContent.innerHTML = '<p>暂无节目数据</p>';
+        } else {
+          programsContent.innerHTML = programs.map((program, index) => `
+            <div class="program-item">
+              <div class="program-title">${index + 1}. ${program.title}</div>
+              <div class="program-info">
+                ${program.time ? `<span>时间: ${program.time}</span><br>` : ''}
+                ${program.tag ? `<span class="program-tag">${program.tag}</span>` : ''}
+                ${program.host ? `<span>主播: ${program.host}</span><br>` : ''}
+                ${program.note ? `<span>备注: ${program.note}</span><br>` : ''}
+                ${program.link ? `<a href="${program.link}" target="_blank">收听链接</a><br>` : ''}
+                ${program.related ? `<span>关联节目: ${program.related}</span>` : ''}
+              </div>
+            </div>
+          `).join('');
+        }
+      } catch (error) {
+        console.error('加载节目列表失败:', error);
+      }
+    }
+
+    // 页面加载时获取节目列表
+    loadPrograms();
   </script>
 </body>
 </html>

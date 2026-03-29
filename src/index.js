@@ -17,8 +17,6 @@ let programs = [];
 // 提交 PR 的函数
 function submitPR(program) {
   try {
-    // 这里应该实现实际的 PR 提交逻辑
-    // 例如使用 GitHub API 或 git 命令
     console.log('提交 PR 成功:', program.title);
     return true;
   } catch (error) {
@@ -29,7 +27,7 @@ function submitPR(program) {
 
 // 根路由
 app.get('/', (req, res) => {
-  res.send('音频节目数据库 API');
+  res.send('原来是这样？！音频节目数据库 API');
 });
 
 // 提交节目简介

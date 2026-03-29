@@ -1,7 +1,7 @@
 {
-  "name": "audio-program-database",
+  "name": "ylszy-audio-programs",
   "version": "1.0.0",
-  "description": "基于 GitHub 的音频节目数据库项目",
+  "description": "原来是这样？！音频节目数据库",
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
@@ -9,8 +9,8 @@
     "start": "node src/index.js"
   },
   "dependencies": {
-    "body-parser": "^1.20.2",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "body-parser": "^1.20.2"
   },
   "devDependencies": {
     "jest": "^29.7.0",
@@ -18,10 +18,10 @@
   },
   "keywords": [
     "audio",
+    "ylszy",
     "database",
     "github",
-    "pr",
-    "automation"
+    "vercel"
   ],
   "author": "",
   "license": "MIT"
